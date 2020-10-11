@@ -70,6 +70,8 @@ NumberRecognizer::NumberRecognizer()
     fsm.addTransition("3", "Finish", "/");
     fsm.addTransition("3", "Finish", ".");
     fsm.addTransition("3", "Finish", "_");
+    fsm.addTransition("3", "Finish", "(");
+    fsm.addTransition("3", "Finish", ")");
     fsm.addTransition("3", "Finish", "EOF");
     fsm.addFinishState("Finish");
 }
@@ -92,11 +94,13 @@ IdRecognizer::IdRecognizer()
         fsm.addTransition("1", "1", std::to_string(i));
     fsm.addTransition("1", "1", "_");
     
-    fsm.addTransition("3", "Finish", "+");
-    fsm.addTransition("3", "Finish", "-");
-    fsm.addTransition("3", "Finish", "*");
-    fsm.addTransition("3", "Finish", "/");
-    fsm.addTransition("3", "Finish", ".");
+    fsm.addTransition("1", "Finish", "+");
+    fsm.addTransition("1", "Finish", "-");
+    fsm.addTransition("1", "Finish", "*");
+    fsm.addTransition("1", "Finish", "/");
+    fsm.addTransition("1", "Finish", ".");
+    fsm.addTransition("1", "Finish", ")");
+    fsm.addTransition("1", "Finish", "(");
     fsm.addTransition("1", "Finish", "EOF");
     fsm.addFinishState("Finish");
 }

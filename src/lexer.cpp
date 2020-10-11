@@ -1,5 +1,7 @@
 #include "lexer.h"
 
+#include <string>
+
 Lexer::Lexer(std::string input_text) : buffer(input_text), lexemeBegin(buffer.begin()), forward(buffer.begin())
 {
     number_recognizer = new NumberRecognizer();
@@ -21,6 +23,9 @@ Token *Lexer::getNextToken()
     {
         const char& ch = getNextChar();
 
+        if(*lexemeBegin == '\0')
+            return nullptr;
+
         if(!number_recognizer->failed() && !number_recognizer->accepted()) 
             number_recognizer->putChar(ch);
         if(!ops_recognizer->failed() && !ops_recognizer->accepted())
@@ -33,22 +38,51 @@ Token *Lexer::getNextToken()
         if(number_recognizer->accepted())
         {
             delete token;
-            token = new Token{ NumberToken };
+            NumberToken *t = new NumberToken();
+            t->type = TokenTypes::Number;
+            t->value = std::stod(std::string(lexemeBegin, forward - 1));
+            token = t;
         }
         if(ops_recognizer->accepted())
         {
             delete token;
-            token = new Token{ OperationToken };
+            OperationType operation_type;
+            switch (*lexemeBegin)
+            {
+            case '+':
+                operation_type = OperationType::Plus;
+                break;
+            case '-':
+                operation_type = OperationType::Minus;
+                break;
+            case '*':
+                operation_type = OperationType::Plus;
+                break;
+            case '/':
+                operation_type = OperationType::Plus;
+                break;
+            };
+            OperationToken *t = new OperationToken();
+            t->type = TokenTypes::Operation;
+            t->op_type = operation_type;
+            token = t;
         }
         if(id_recognizer->accepted())
         {
             delete token;
-            token = new Token{ IdToken };
+            token = new Token { TokenTypes::Id };
         }
         if(bracket_recognizer->accepted())
         {
             delete token;
-            token = new Token{ BracketToken };
+            BracketToken *t = new BracketToken();
+            t->type = TokenTypes::Bracket;
+
+            if(*lexemeBegin == '(')
+                t->bracket_type = BracketType::LeftBracket;
+            else if(*lexemeBegin == ')')
+                t->bracket_type = BracketType::RightBraket;
+            token = t;
         }
 
         bool activeRecognizerExists = false;
@@ -66,8 +100,8 @@ Token *Lexer::getNextToken()
             id_recognizer->reset();
             bracket_recognizer->reset();
 
-            lexemeBegin = forward;
             forward--;
+            lexemeBegin = forward;
             return token;
         }
     }
