@@ -46,25 +46,30 @@ Token *Lexer::getNextToken()
         if(ops_recognizer->accepted())
         {
             delete token;
-            OperationType operation_type;
+            OperatorType operator_type;
+            int operator_priority;
             switch (*lexemeBegin)
             {
             case '+':
-                operation_type = OperationType::Plus;
+                operator_type = OperatorType::Plus;
+                operator_priority = 1;
                 break;
             case '-':
-                operation_type = OperationType::Minus;
+                operator_type = OperatorType::Minus;
+                operator_priority = 1;
                 break;
             case '*':
-                operation_type = OperationType::Plus;
+                operator_type = OperatorType::Multiplication;
+                operator_priority = 2;
                 break;
             case '/':
-                operation_type = OperationType::Plus;
+                operator_type = OperatorType::Division;
+                operator_priority = 2;
                 break;
             };
-            OperationToken *t = new OperationToken();
-            t->type = TokenTypes::Operation;
-            t->op_type = operation_type;
+            OperatorToken *t = new OperatorToken();
+            t->type = TokenTypes::Operator;
+            t->op_type = operator_type;
             token = t;
         }
         if(id_recognizer->accepted())

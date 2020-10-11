@@ -1,9 +1,11 @@
+#pragma once
+
 #include <string>
 #include <finite_state_machine.h>
 
-enum TokenTypes { Number, Bracket, Operation, Id };
+enum TokenTypes { Number, Bracket, Operator, Id };
 enum BracketType { LeftBracket, RightBraket };
-enum OperationType { Plus, Minus, Multiplication, Division, Exponent };
+enum OperatorType { Plus, Minus, Multiplication, Division, Exponent };
 
 struct Token
 {
@@ -20,8 +22,9 @@ struct BracketToken : Token
     BracketType bracket_type;
 };
 
-struct OperationToken : Token
+struct OperatorToken : Token
 {
-    OperationType op_type;
+    OperatorType op_type;
+    int operator_priority;
 };
 
