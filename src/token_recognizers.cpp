@@ -126,7 +126,53 @@ BracketsRecognizer::BracketsRecognizer()
     fsm.addTransition("1", "Finish", "/");
     fsm.addTransition("1", "Finish", ".");
     fsm.addTransition("1", "Finish", "_");
+    fsm.addTransition("1", "Finish", ")");
+    fsm.addTransition("1", "Finish", "(");
     fsm.addTransition("1", "Finish", "EOF");
     fsm.addFinishState("Finish");
+}
 
+FunctionRecognizer::FunctionRecognizer()
+{
+    fsm.addState("1");
+    fsm.addState("2");
+    fsm.addState("3");
+    fsm.addState("4");
+    fsm.addState("5");
+    fsm.addState("6");
+    fsm.addState("Finish");
+
+    fsm.addTransition("Initial state", "1", "s");
+    fsm.addTransition("1", "2", "i");
+    fsm.addTransition("2", "3", "n");
+
+    fsm.addTransition("Initial state", "4", "c");
+    fsm.addTransition("4", "5", "o");
+    fsm.addTransition("5", "6", "s");
+
+    for(char i = 'a'; i != 'z'; i++)
+    {
+        fsm.addTransition("3", "Finish", std::string(1, i));
+        fsm.addTransition("3", "Finish", std::string(1, i - 'a' + 'A'));
+        fsm.addTransition("6", "Finish", std::string(1, i));
+        fsm.addTransition("6", "Finish", std::string(1, i - 'a' + 'A'));
+    }
+    fsm.addTransition("3", "Finish", "+");
+    fsm.addTransition("3", "Finish", "-");
+    fsm.addTransition("3", "Finish", "*");
+    fsm.addTransition("3", "Finish", "/");
+    fsm.addTransition("3", "Finish", ".");
+    fsm.addTransition("3", "Finish", ")");
+    fsm.addTransition("3", "Finish", "(");
+    fsm.addTransition("3", "Finish", "EOF");
+
+    fsm.addTransition("6", "Finish", "+");
+    fsm.addTransition("6", "Finish", "-");
+    fsm.addTransition("6", "Finish", "*");
+    fsm.addTransition("6", "Finish", "/");
+    fsm.addTransition("6", "Finish", ".");
+    fsm.addTransition("6", "Finish", ")");
+    fsm.addTransition("6", "Finish", "(");
+    fsm.addTransition("6", "Finish", "EOF");
+    fsm.addFinishState("Finish");
 }

@@ -15,7 +15,8 @@ private:
     TokenRecognizer *number_recognizer, 
                     *ops_recognizer,
                     *id_recognizer, 
-                    *bracket_recognizer;
+                    *bracket_recognizer,
+                    *func_recognizer;
 public:
     Lexer(std::string input_text);
     Token* getNextToken();

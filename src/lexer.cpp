@@ -8,6 +8,7 @@ Lexer::Lexer(std::string input_text) : buffer(input_text), lexemeBegin(buffer.be
     ops_recognizer = new OperationRecognizer();
     id_recognizer = new IdRecognizer();
     bracket_recognizer = new BracketsRecognizer();
+    func_recognizer = new FunctionRecognizer();
 }
 
 const char &Lexer::getNextChar()
@@ -34,6 +35,8 @@ Token *Lexer::getNextToken()
             id_recognizer->putChar(ch);
         if(!bracket_recognizer->failed() && !bracket_recognizer->accepted())
             bracket_recognizer->putChar(ch);
+        if(!func_recognizer->failed() && !func_recognizer->accepted())
+            func_recognizer->putChar(ch);
 
         if(number_recognizer->accepted())
         {
@@ -77,6 +80,20 @@ Token *Lexer::getNextToken()
             delete token;
             token = new Token { TokenTypes::Id };
         }
+        if(func_recognizer->accepted())
+        {
+            delete token;
+            FunctionToken *t = new FunctionToken();
+            t->type = TokenTypes::Function;
+            std::string token_value = std::string(lexemeBegin, forward - 1);
+            if(token_value.compare("sin") == 0)
+                t->func_type = FunctionType::Sin;
+            else if(token_value.compare("cos") == 0)
+                t->func_type = FunctionType::Cos;
+            else
+                throw new LexerError("Undefined function!");
+            token = t;
+        }
         if(bracket_recognizer->accepted())
         {
             delete token;
@@ -94,6 +111,7 @@ Token *Lexer::getNextToken()
         if(!number_recognizer->failed() && !number_recognizer->accepted()) activeRecognizerExists = true;
         if(!ops_recognizer->failed() && !ops_recognizer->accepted()) activeRecognizerExists = true;
         if(!id_recognizer->failed() && !id_recognizer->accepted()) activeRecognizerExists = true;
+        if(!func_recognizer->failed() && !func_recognizer->accepted()) activeRecognizerExists = true;
         if(!bracket_recognizer->failed() && !bracket_recognizer->accepted()) activeRecognizerExists = true;
 
         if(!activeRecognizerExists && token == nullptr)
@@ -103,6 +121,7 @@ Token *Lexer::getNextToken()
             number_recognizer->reset();
             ops_recognizer->reset();
             id_recognizer->reset();
+            func_recognizer->reset();
             bracket_recognizer->reset();
 
             forward--;

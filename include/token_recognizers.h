@@ -34,3 +34,9 @@ class BracketsRecognizer : public TokenRecognizer
 public:
     BracketsRecognizer();
 };
+
+class FunctionRecognizer : public TokenRecognizer
+{
+public:
+    FunctionRecognizer();
+};
