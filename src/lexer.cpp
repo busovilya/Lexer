@@ -69,6 +69,10 @@ Token *Lexer::getNextToken()
                 operator_type = OperatorType::Division;
                 operator_priority = 2;
                 break;
+            case '^':
+                operator_type = OperatorType::Exponent;
+                operator_priority = 3;
+                break;
             };
             OperatorToken *t = new OperatorToken();
             t->type = TokenTypes::Operator;

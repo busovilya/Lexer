@@ -30,6 +30,7 @@ OperationRecognizer::OperationRecognizer()
     fsm.addTransition("Initial state", "1", "-");
     fsm.addTransition("Initial state", "1", "*");
     fsm.addTransition("Initial state", "1", "/");
+    fsm.addTransition("Initial state", "1", "^");
 
     for (int i = 0; i <= 9; i++)
         fsm.addTransition("1", "Finish", std::to_string(i));
@@ -38,6 +39,13 @@ OperationRecognizer::OperationRecognizer()
     for (char i = 'A'; i != 'Z'; i++)
         fsm.addTransition("1", "Finish", std::string(1, i));
     fsm.addTransition("1", "Finish", "_");
+    fsm.addTransition("1", "Finish", "+");
+    fsm.addTransition("1", "Finish", "-");
+    fsm.addTransition("1", "Finish", "*");
+    fsm.addTransition("1", "Finish", "/");
+    fsm.addTransition("1", "Finish", "^");
+    fsm.addTransition("1", "Finish", "(");
+    fsm.addTransition("1", "Finish", ")");
     fsm.addTransition("1", "Finish", "EOF");
     fsm.addFinishState("Finish");
 }
@@ -139,40 +147,30 @@ FunctionRecognizer::FunctionRecognizer()
     fsm.addState("3");
     fsm.addState("4");
     fsm.addState("5");
-    fsm.addState("6");
     fsm.addState("Finish");
 
     fsm.addTransition("Initial state", "1", "s");
     fsm.addTransition("1", "2", "i");
-    fsm.addTransition("2", "3", "n");
+    fsm.addTransition("2", "5", "n");
 
-    fsm.addTransition("Initial state", "4", "c");
-    fsm.addTransition("4", "5", "o");
-    fsm.addTransition("5", "6", "s");
+    fsm.addTransition("Initial state", "3", "c");
+    fsm.addTransition("3", "4", "o");
+    fsm.addTransition("4", "5", "s");
 
     for(char i = 'a'; i != 'z'; i++)
     {
-        fsm.addTransition("3", "Finish", std::string(1, i));
-        fsm.addTransition("3", "Finish", std::string(1, i - 'a' + 'A'));
-        fsm.addTransition("6", "Finish", std::string(1, i));
-        fsm.addTransition("6", "Finish", std::string(1, i - 'a' + 'A'));
+        fsm.addTransition("5", "Finish", std::string(1, i));
+        fsm.addTransition("5", "Finish", std::string(1, i - 'a' + 'A'));
     }
-    fsm.addTransition("3", "Finish", "+");
-    fsm.addTransition("3", "Finish", "-");
-    fsm.addTransition("3", "Finish", "*");
-    fsm.addTransition("3", "Finish", "/");
-    fsm.addTransition("3", "Finish", ".");
-    fsm.addTransition("3", "Finish", ")");
-    fsm.addTransition("3", "Finish", "(");
-    fsm.addTransition("3", "Finish", "EOF");
-
-    fsm.addTransition("6", "Finish", "+");
-    fsm.addTransition("6", "Finish", "-");
-    fsm.addTransition("6", "Finish", "*");
-    fsm.addTransition("6", "Finish", "/");
-    fsm.addTransition("6", "Finish", ".");
-    fsm.addTransition("6", "Finish", ")");
-    fsm.addTransition("6", "Finish", "(");
-    fsm.addTransition("6", "Finish", "EOF");
+    for(int i = 0; i <= 9; i++)
+        fsm.addTransition("5", "Finish", std::to_string(i));
+    fsm.addTransition("5", "Finish", "+");
+    fsm.addTransition("5", "Finish", "-");
+    fsm.addTransition("5", "Finish", "*");
+    fsm.addTransition("5", "Finish", "/");
+    fsm.addTransition("5", "Finish", ".");
+    fsm.addTransition("5", "Finish", ")");
+    fsm.addTransition("5", "Finish", "(");
+    fsm.addTransition("5", "Finish", "EOF");
     fsm.addFinishState("Finish");
 }
