@@ -69,9 +69,12 @@ NumberRecognizer::NumberRecognizer()
     fsm.addState("Finish");
 
     for (char i = 'a'; i != 'z'; i++)
+    {
         fsm.addTransition("3", "Finish", std::string(1, i));
-    for (char i = 'A'; i != 'Z'; i++)
-        fsm.addTransition("3", "Finish", std::string(1, i));
+        fsm.addTransition("1", "Finish", std::string(1, i));
+        fsm.addTransition("3", "Finish", std::string(1, i - 'a' + 'A'));
+        fsm.addTransition("1", "Finish", std::string(1, i - 'a' + 'A'));
+    }
     fsm.addTransition("3", "Finish", "+");
     fsm.addTransition("3", "Finish", "-");
     fsm.addTransition("3", "Finish", "*");
@@ -81,6 +84,15 @@ NumberRecognizer::NumberRecognizer()
     fsm.addTransition("3", "Finish", "(");
     fsm.addTransition("3", "Finish", ")");
     fsm.addTransition("3", "Finish", "EOF");
+    
+    fsm.addTransition("1", "Finish", "+");
+    fsm.addTransition("1", "Finish", "-");
+    fsm.addTransition("1", "Finish", "*");
+    fsm.addTransition("1", "Finish", "/");
+    fsm.addTransition("1", "Finish", "_");
+    fsm.addTransition("1", "Finish", "(");
+    fsm.addTransition("1", "Finish", ")");
+    fsm.addTransition("1", "Finish", "EOF");
     fsm.addFinishState("Finish");
 }
 
