@@ -14,6 +14,7 @@ public:
     bool isFinished();
     bool move(std::string);
     std::string getState();
+    void setState(std::string);
     void clear();
 private:
     std::unordered_set<std::string> states;

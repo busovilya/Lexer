@@ -50,3 +50,8 @@ void FiniteStateMachine::clear()
 {
     current_state = "Initial state";
 }
+
+void FiniteStateMachine::setState(std::string state)
+{
+    this->current_state = state;
+}
