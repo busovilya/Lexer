@@ -77,12 +77,16 @@ Token *Lexer::getNextToken()
             OperatorToken *t = new OperatorToken();
             t->type = TokenTypes::Operator;
             t->op_type = operator_type;
+            t->operator_priority = operator_priority;
             token = t;
         }
         if(id_recognizer->accepted())
         {
             delete token;
-            token = new Token { TokenTypes::Id };
+            IdToken* id_token = new IdToken();
+            id_token->type = TokenTypes::Id;
+            id_token->name = std::string(lexemeBegin, forward - 1);
+            token = id_token;
         }
         if(func_recognizer->accepted())
         {
