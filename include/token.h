@@ -34,4 +34,7 @@ struct FunctionToken : Token
     FunctionType func_type;
 };
 
-
+struct IdToken : Token
+{
+    std::string name;
+};
