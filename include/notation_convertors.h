@@ -1,4 +1,5 @@
 #include <vector>
 #include "token.h"
 
-std::vector<Token*> from_infix_to_postfix(std::vector<Token*> tokens);
+std::vector<Token*> fromInfixToPostfix(std::vector<Token*> tokens);
+std::vector<Token*> fromPostfixToInfix(std::vector<Token*> tokens);
